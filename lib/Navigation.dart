@@ -39,23 +39,23 @@ class _NavigationState extends State<Navigation> {
       extendBody: true,
       bottomNavigationBar: AnimatedNotchBottomBar(
         notchBottomBarController: _notchController,
-        color: Colors.white,
+        color: Colors.white24,
         showLabel: false,
         notchColor: Colors.deepPurple,
         removeMargins: false,
         bottomBarItems: const [
           BottomBarItem(
-            inActiveItem: Icon(Icons.home_outlined, color: Colors.grey),
+            inActiveItem: Icon(Icons.home_outlined, color: Colors.deepPurple),
             activeItem: Icon(Icons.home_filled, color: Colors.white),
             itemLabel: 'Home',
           ),
           BottomBarItem(
-            inActiveItem: Icon(Icons.add_circle_outline, color: Colors.grey),
+            inActiveItem: Icon(Icons.add_circle_outline, color: Colors.deepPurple),
             activeItem: Icon(Icons.add_circle, color: Colors.white),
             itemLabel: 'Create',
           ),
           BottomBarItem(
-            inActiveItem: Icon(Icons.person_outline, color: Colors.grey),
+            inActiveItem: Icon(Icons.person_outline, color: Colors.deepPurple),
             activeItem: Icon(Icons.person, color: Colors.white),
             itemLabel: 'Profile',
           ),

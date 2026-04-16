@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Welcome",style: TextStyle(color: Colors.grey,fontSize: 15,fontWeight: FontWeight.bold),),
-                    Text(widget.user ,style: TextStyle(color: Colors.deepPurple[900],fontSize: 30,fontWeight: FontWeight.bold),),
+                    Text(widget.user ,style: TextStyle(color: Color(0xff231942),fontSize: 30,fontWeight: FontWeight.bold),),
                   ],
                 ),
                 Container(
