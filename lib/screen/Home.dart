@@ -36,8 +36,10 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 Container(
-                  decoration: BoxDecoration(color: Colors.white24),
-                  width:90,
+                  decoration: BoxDecoration(color: Colors.grey[200],
+                    borderRadius: BorderRadius.all(Radius.elliptical(25, 25))),
+                  padding: EdgeInsets.all(5),
+                  width:100,
                   child: Row(
                       children: [
                         Container(
@@ -86,7 +88,7 @@ class _HomeState extends State<Home> {
                   },
                   child: Container(
                         width: 90,
-                        decoration: BoxDecoration(color: Colors.grey[300],borderRadius: BorderRadius.all(Radius.circular(10))),
+                        decoration: BoxDecoration(color: Colors.green[100],borderRadius: BorderRadius.all(Radius.circular(10))),
                         margin: EdgeInsets.all(5),
                         height: 150,
                         child: Column(
@@ -107,7 +109,7 @@ class _HomeState extends State<Home> {
                   },
                   child: Container(
                     width: 90,
-                    decoration: BoxDecoration(color: Colors.grey[300],borderRadius: BorderRadius.all(Radius.circular(10))),
+                    decoration: BoxDecoration(color: Colors.yellow[200],borderRadius: BorderRadius.all(Radius.circular(10))),
                     margin: EdgeInsets.all(5),
                     height: 150,
                     child:
@@ -115,14 +117,14 @@ class _HomeState extends State<Home> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image.asset("images/achievements.png",width: 90,),
-                          Text("Achievements",style: TextStyle(color: Color(0xff231942),fontWeight: FontWeight.bold,fontSize: 12),),
+                          FittedBox(child: Text("Achievements",style: TextStyle(color: Color(0xff231942),fontWeight: FontWeight.bold,fontSize: 12),)),
                         ],
                   ),
                 ),)
             ],),
-            Text("explore -➔",style: TextStyle(color: Colors.deepPurple[900],fontSize: 25,fontWeight: FontWeight.bold),),
+            Text("explore -➔",style: TextStyle(color: Color(0xff231942),fontSize: 25,fontWeight: FontWeight.bold),),
             Container(
-              height: 425,
+              height: MediaQuery.of(context).size.height*0.56,
               child: GridView(
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 200),
