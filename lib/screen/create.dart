@@ -15,6 +15,7 @@ class _CreateState extends State<Create> {
   String quizCode = generateQuizCode();
   int CorrectIndex = 0;
   int points = 1;
+  int currentPoints = 1;
   final questionController = TextEditingController();
   final List<TextEditingController> optionControllers = [
     TextEditingController(),
@@ -85,6 +86,29 @@ class _CreateState extends State<Create> {
               ),
             ],
           ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Points for this question:",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                DropdownButton<int>(
+                  value: currentPoints,
+                  items: [1, 2, 5, 10].map((int value) {
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Text("$value pts"),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      currentPoints = newValue!;
+                    });
+                  },
+                ),
+              ],
+            ),
 
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Color(0xff231942)),

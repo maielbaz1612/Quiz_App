@@ -1,3 +1,4 @@
+import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:brainy/screen/create.dart';
 import 'package:flutter/material.dart';
 
@@ -13,21 +14,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> Create()));
-      },child: Icon(Icons.add,),),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-      bottomNavigationBar: BottomNavigationBar(items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home_outlined),label: "home"),
-        BottomNavigationBarItem(icon: Icon(Icons.person_outline),label: "you"),],
-        backgroundColor: Color(0xff231942),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey,),
-
       body: Container(
         padding: EdgeInsets.only(left: 20,top: 50,right: 20),
         child: Column(

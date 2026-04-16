@@ -1,3 +1,4 @@
+import 'package:brainy/Navigation.dart';
 import 'package:brainy/screen/Home.dart';
 import 'package:flutter/material.dart';
 
@@ -90,7 +91,8 @@ class _StartState extends State<Start> {
                           children: [
                             MaterialButton(onPressed: (){
                               String input = userName.text;
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> Home(user: input,)));
+                              String word = password.text;
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> Navigation(userName: input, pass: word,)));
                             },
                               color: Colors.white24,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15),),
@@ -98,7 +100,8 @@ class _StartState extends State<Start> {
                               child: Text("SignIn",style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),),
                             MaterialButton(onPressed: (){
                               String input = userName.text;
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> Home(user: input,)));
+                              String word = password.text;
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> Navigation(userName: input, pass: word,)));
                             },
                               color: Colors.white24,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15),),
