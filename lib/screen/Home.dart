@@ -1,5 +1,7 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
+import 'package:brainy/screen/achievements.dart';
 import 'package:brainy/screen/create.dart';
+import 'package:brainy/screen/join.dart';
 import 'package:flutter/material.dart';
 
 import 'categories.dart';
@@ -50,13 +52,14 @@ class _HomeState extends State<Home> {
                     )),
               ],
             ),
+            SizedBox(height: 20,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
                   onTap: (){
                     setState(() {
-                      //Navigator.push(context, MaterialPageRoute(builder: (context)=> ()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Join()));
                     });
                   },
                   child:
@@ -99,7 +102,7 @@ class _HomeState extends State<Home> {
                 GestureDetector(
                   onTap: (){
                     setState(() {
-                      //Navigator.push(context, MaterialPageRoute(builder: (context)=> ()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Achievements()));
                     });
                   },
                   child: Container(
@@ -119,7 +122,7 @@ class _HomeState extends State<Home> {
             ],),
             Text("explore -➔",style: TextStyle(color: Colors.deepPurple[900],fontSize: 25,fontWeight: FontWeight.bold),),
             Container(
-              height: 380,
+              height: 425,
               child: GridView(
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 200),

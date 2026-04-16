@@ -1,3 +1,4 @@
+import 'package:brainy/screen/AvailableQuizes.dart';
 import 'package:flutter/material.dart';
 
 class categories extends StatefulWidget {
@@ -16,7 +17,7 @@ class _categoriesState extends State<categories> {
     return InkWell(
       onTap: (){
         setState(() {
-          //Navigator.push(context, MaterialPageRoute(builder: (context) => ));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Availablequizes()));
         });
       },
       child: Card(
