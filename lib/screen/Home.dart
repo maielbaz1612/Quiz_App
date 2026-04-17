@@ -58,23 +58,16 @@ class _HomeState extends State<Home> {
                     ),
                   ],
                 ),
+
                 Container(
-                  decoration: BoxDecoration(color: Colors.white24),
-                  width: 90,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  padding: EdgeInsets.all(8),
                   child: Row(
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: Colors.yellow[600],
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.star_outline_sharp,
-                          color: Colors.white,
-                          size: 25,
-                        ),
-                      ),
+                      Icon(Icons.star, color: Colors.orange),
                       SizedBox(width: 5),
                       Text("points"),
                     ],
@@ -82,127 +75,63 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
+
             SizedBox(height: 20),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
                   onTap: () {
-                    setState(() {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Join()),
-                      );
-                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Join()),
+                    );
                   },
-                  child: Container(
-                    width: 90,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    margin: EdgeInsets.all(5),
-                    height: 150,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 20),
-                        Image.asset("images/join.png", width: 90),
-                        Text(
-                          "Join",
-                          style: TextStyle(
-                            color: Color(0xff231942),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: buildCard("images/join.png", "Join"),
                 ),
+
                 GestureDetector(
                   onTap: () {
-                    setState(() {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Create()),
-                      );
-                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Create()),
+                    );
                   },
-                  child: Container(
-                    width: 90,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    margin: EdgeInsets.all(5),
-                    height: 150,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset("images/add.png", width: 90),
-                        Text(
-                          "Create",
-                          style: TextStyle(
-                            color: Color(0xff231942),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: buildCard("images/add.png", "Create"),
                 ),
+
                 GestureDetector(
                   onTap: () {
-                    setState(() {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              Achievements(userId: widget.userId),
-                        ),
-                      );
-                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            Achievements(userId: widget.userId),
+                      ),
+                    );
                   },
-                  child: Container(
-                    width: 90,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    margin: EdgeInsets.all(5),
-                    height: 150,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset("images/achievements.png", width: 90),
-                        Text(
-                          "Achievements",
-                          style: TextStyle(
-                            color: Color(0xff231942),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child:
+                      buildCard("images/achievements.png", "Achievements"),
                 ),
               ],
             ),
+
+            SizedBox(height: 20),
+
             Text(
-              "explore -➔",
+              "Explore ➔",
               style: TextStyle(
-                color: Colors.deepPurple[900],
+                color: Color(0xff231942),
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
-              height: 425,
+
+            SizedBox(height: 10),
+
+            Expanded(
               child: GridView(
-                shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisExtent: 200,
@@ -233,6 +162,31 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildCard(String image, String title) {
+    return Container(
+      width: 100,
+      height: 140,
+      decoration: BoxDecoration(
+        color: Colors.grey[300],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(image, width: 70),
+          SizedBox(height: 5),
+          Text(
+            title,
+            style: TextStyle(
+              color: Color(0xff231942),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }
