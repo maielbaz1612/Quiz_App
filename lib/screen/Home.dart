@@ -1,4 +1,4 @@
-import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
+import 'package:brainy/data/sqflite_database.dart';
 import 'package:brainy/screen/achievements.dart';
 import 'package:brainy/screen/create.dart';
 import 'package:brainy/screen/join.dart';
@@ -7,21 +7,19 @@ import 'package:flutter/material.dart';
 import 'categories.dart';
 
 class Home extends StatefulWidget {
-  final String user;
-  const Home({super.key, required this.user});
-
+  final int userId;
+  const Home({super.key, required this.userId});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(left: 20,top: 50,right: 20),
+        padding: EdgeInsets.only(left: 20, top: 50, right: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -31,119 +29,165 @@ class _HomeState extends State<Home> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Welcome",style: TextStyle(color: Colors.grey,fontSize: 15,fontWeight: FontWeight.bold),),
-                    Text(widget.user ,style: TextStyle(color: Color(0xff231942),fontSize: 30,fontWeight: FontWeight.bold),),
+                    Text(
+                      "Welcome",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    FutureBuilder(
+                      future: SqlDatabase().getWhere('users', 'id = ?', [
+                        widget.userId,
+                      ]),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return CircularProgressIndicator();
+                        }
+                        var user = snapshot.data![0];
+                        return Text(
+                          user['name'],
+                          style: TextStyle(
+                            color: Color(0xff231942),
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
+
                 Container(
-                  decoration: BoxDecoration(color: Colors.grey[200],
-                    borderRadius: BorderRadius.all(Radius.elliptical(25, 25))),
-                  padding: EdgeInsets.all(5),
-                  width:100,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  padding: EdgeInsets.all(8),
                   child: Row(
-                      children: [
-                        Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.yellow[600],
-                              shape: BoxShape.circle,),
-                            child: Icon(Icons.star_outline_sharp,color: Colors.white,size: 25,)),
-                        SizedBox(width: 5,),
-                        Text("points")
-                      ],
-                    )),
+                    children: [
+                      Icon(Icons.star, color: Colors.orange),
+                      SizedBox(width: 5),
+                      Text("points"),
+                    ],
+                  ),
+                ),
               ],
             ),
-            SizedBox(height: 20,),
+
+            SizedBox(height: 20),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Join()));
-                    });
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Join()),
+                    );
+                  },
+                  child: buildCard("images/join.png", "Join"),
+                ),
+
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Create()),
+                    );
+                  },
+                  child: buildCard("images/add.png", "Create"),
+                ),
+
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            Achievements(userId: widget.userId),
+                      ),
+                    );
                   },
                   child:
-                      Container(
-                        width: 90,
-                        decoration: BoxDecoration(color: Colors.grey[300],borderRadius: BorderRadius.all(Radius.circular(10))),
-                        margin: EdgeInsets.all(5),
-                        height: 150,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(height: 20,),
-                            Image.asset("images/join.png",width: 90,),
-                            Text("Join",style: TextStyle(color: Color(0xff231942),fontWeight: FontWeight.bold,fontSize: 15),)
-                          ],
-                        ),),
+                      buildCard("images/achievements.png", "Achievements"),
+                ),
+              ],
+            ),
 
-                  ),
-                GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Create()));
-                    });
-                  },
-                  child: Container(
-                        width: 90,
-                        decoration: BoxDecoration(color: Colors.green[100],borderRadius: BorderRadius.all(Radius.circular(10))),
-                        margin: EdgeInsets.all(5),
-                        height: 150,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset("images/add.png",width: 90,),
-                            Text("Create",style: TextStyle(color: Color(0xff231942),fontWeight: FontWeight.bold,fontSize: 15),),
-                          ],
-                        ),),
+            SizedBox(height: 20),
 
+            Text(
+              "Explore ➔",
+              style: TextStyle(
+                color: Color(0xff231942),
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
 
-                  ),
-                GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> Achievements()));
-                    });
-                  },
-                  child: Container(
-                    width: 90,
-                    decoration: BoxDecoration(color: Colors.yellow[200],borderRadius: BorderRadius.all(Radius.circular(10))),
-                    margin: EdgeInsets.all(5),
-                    height: 150,
-                    child:
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset("images/achievements.png",width: 90,),
-                          FittedBox(child: Text("Achievements",style: TextStyle(color: Color(0xff231942),fontWeight: FontWeight.bold,fontSize: 12),)),
-                        ],
-                  ),
-                ),)
-            ],),
-            Text("explore -➔",style: TextStyle(color: Color(0xff231942),fontSize: 25,fontWeight: FontWeight.bold),),
-            Container(
-              height: MediaQuery.of(context).size.height*0.56,
+            SizedBox(height: 10),
+
+            Expanded(
               child: GridView(
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 200),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisExtent: 200,
+                ),
                 children: [
-                  categories(photo: "images/physics.png", name: "Physics", count: 12),
-                  categories(photo: "images/electronics.png", name: "Electronics", count: 8),
-                  categories(photo: "images/python.png", name: "Python", count: 20),
-                  categories(photo: "images/cybersecurity.png", name: "CyberSecurity", count: 6),
-                  categories(photo: "images/javascript.png", name: "JavaScript", count: 8),
-                  categories(photo: "images/math.png", name: "Math", count: 25),
-                  categories(photo: "images/drawing.png", name: "Drawing", count: 10),
-              ],),
-            )
+                  Categories(
+                    photo: "images/physics.png",
+                    name: "Physics",
+                    categoryId: 1,
+                  ),
+                  Categories(
+                    photo: "images/electronics.png",
+                    name: "Electronics",
+                    categoryId: 2,
+                  ),
+                  Categories(
+                    photo: "images/python.png",
+                    name: "Python",
+                    categoryId: 3,
+                  ),
+                  Categories(
+                    photo: "images/cybersecurity.png",
+                    name: "CyberSecurity",
+                    categoryId: 4,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
 
+  Widget buildCard(String image, String title) {
+    return Container(
+      width: 100,
+      height: 140,
+      decoration: BoxDecoration(
+        color: Colors.grey[300],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(image, width: 70),
+          SizedBox(height: 5),
+          Text(
+            title,
+            style: TextStyle(
+              color: Color(0xff231942),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
-
-

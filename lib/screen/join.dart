@@ -1,3 +1,5 @@
+import 'package:brainy/data/sqflite_database.dart';
+import 'package:brainy/screen/quiz_screen.dart';
 import 'package:flutter/material.dart';
 
 class Join extends StatefulWidget {
@@ -8,31 +10,54 @@ class Join extends StatefulWidget {
 }
 
 class _JoinState extends State<Join> {
+  late TextEditingController code;
+
+  @override
+  void initState() {
+    super.initState();
+    code = TextEditingController();
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController code = TextEditingController();
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(top: 70,left: 15,right: 15,bottom: 15),
-        child: Column(children: [
-          Form(child: TextFormField(
-            controller: code,
-            decoration: InputDecoration(
-                hintText: "Enter Code",
-                hintStyle: TextStyle(color: Color(0xFF5e548e)),
-                filled: true,
-                fillColor: Colors.white,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: Colors.white30),)
-                ,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide(color: Color(0xFFE0B1CB), width: 2),)
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            TextField(
+              controller: code,
+              decoration: InputDecoration(labelText: "Enter Code"),
             ),
-          )),
 
-        ],),
+            SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () async {
+                final db = SqlDatabase();
+
+                var result = await db.getQuizByCode(code.text);
+
+                if (result.isEmpty) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text("Quiz not found")));
+                  return;
+                }
+
+                int quizId = result.first['id'];
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => QuizScreen(quizId: quizId),
+                  ),
+                );
+              },
+              child: Text("Join"),
+            ),
+          ],
+        ),
       ),
     );
   }
