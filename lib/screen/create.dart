@@ -1,6 +1,9 @@
 import 'dart:math';
 
-import 'package:brainy/screen/question.dart';
+import 'package:brainy/data/sqflite_database.dart';
+import 'package:brainy/models/quiz.dart';
+import 'package:brainy/models/question.dart';
+import 'package:brainy/models/option.dart';
 import 'package:flutter/material.dart';
 
 class Create extends StatefulWidget {
@@ -11,12 +14,13 @@ class Create extends StatefulWidget {
 }
 
 class _CreateState extends State<Create> {
-  final List<Question> Questions = [];
+  final List<Question> questions = [];
   String quizCode = generateQuizCode();
-  int CorrectIndex = 0;
-  int points = 1;
+  int correctIndex = 0;
   int currentPoints = 1;
+
   final questionController = TextEditingController();
+
   final List<TextEditingController> optionControllers = [
     TextEditingController(),
     TextEditingController(),
@@ -26,13 +30,21 @@ class _CreateState extends State<Create> {
 
   void addNewQuestion() {
     setState(() {
-      Questions.add(
-          Question(
-                questionText: questionController.text,
-                options: optionControllers.map((c) => c.text).toList(),
-                correctAnswerIndex: CorrectIndex,
-                points: points,
-              ));
+      questions.add(
+        Question(
+          quizId: 0,
+          questionText: questionController.text,
+          options: List.generate(
+            optionControllers.length,
+            (index) => Option(
+              questionId: 0,
+              optionText: optionControllers[index].text,
+              isCorrect: index == correctIndex ? 1 : 0,
+            ),
+          ),
+        ),
+      );
+
       questionController.clear();
       for (var c in optionControllers) {
         c.clear();
@@ -43,88 +55,70 @@ class _CreateState extends State<Create> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Row(
-        children: [
-          Text("Quiz Code ➔ ",style: TextStyle(color: Color(0xff231942),fontWeight: FontWeight.bold,fontSize: 20),),
-          Text("$quizCode",style: TextStyle(color: Color(0xff5e548e),fontWeight: FontWeight.bold,fontSize: 15),)
-        ],
-      ),),
-      body:SingleChildScrollView(
+      appBar: AppBar(
+        title: Row(children: [Text("Quiz Code ➔ "), Text(quizCode)]),
+      ),
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(10),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-          TextField(
-            controller: questionController,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide(color: Colors.white30),)
-              ,
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide(color: Color(0xFFE0B1CB), width: 2),),
-              labelText: "Question Text",
-            labelStyle: TextStyle(color: Color(0xff231942))),
-          ),
-          SizedBox(height: 20,),
-          ...List.generate(4, (index) => TextField(
-            controller: optionControllers[index],
-            decoration: InputDecoration(labelText: "Option ${index + 1}"),
-          )),
-          SizedBox(height: 20,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Correct Answer:"),
-              DropdownButton<int>(
-                value: CorrectIndex,
-                items: [0, 1, 2, 3].map((i) => DropdownMenuItem(value: i, child: Text("Option ${i+1}"))).toList(),
-                onChanged: (val) => setState(() => CorrectIndex = val!),
-              ),
-            ],
-          ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Points for this question:",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-                DropdownButton<int>(
-                  value: currentPoints,
-                  items: [1, 2, 5, 10].map((int value) {
-                    return DropdownMenuItem<int>(
-                      value: value,
-                      child: Text("$value pts"),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      currentPoints = newValue!;
-                    });
-                  },
-                ),
-              ],
+            TextField(
+              controller: questionController,
+              decoration: InputDecoration(labelText: "Question"),
             ),
 
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Color(0xff231942)),
-            onPressed: addNewQuestion,
-            child: Text("Add Another",style: TextStyle(color: Colors.white),),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Color(0xff231942)),
-            onPressed: (){
-              addNewQuestion();
-              Navigator.pop(context);
-            },
-            child: Text("Finish",style: TextStyle(color: Colors.white),),
-          ),
+            SizedBox(height: 20),
 
-        ],),
+            ...List.generate(
+              4,
+              (index) => TextField(
+                controller: optionControllers[index],
+                decoration: InputDecoration(labelText: "Option ${index + 1}"),
+              ),
+            ),
+
+            SizedBox(height: 20),
+
+            DropdownButton<int>(
+              value: correctIndex,
+              items: [0, 1, 2, 3]
+                  .map(
+                    (i) => DropdownMenuItem(
+                      value: i,
+                      child: Text("Correct: Option ${i + 1}"),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (val) => setState(() => correctIndex = val!),
+            ),
+
+            SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: addNewQuestion,
+              child: Text("Add Question"),
+            ),
+
+            ElevatedButton(
+              onPressed: () async {
+                final db = SqlDatabase();
+
+                Quiz quiz = Quiz(
+                  title: "New Quiz",
+                  description: "description",
+                  code: quizCode,
+                  categoryId: 1,
+                  questions: questions,
+                );
+
+                await db.createFullQuiz(quiz);
+
+                Navigator.pop(context);
+              },
+              child: Text("Finish"),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -133,5 +127,9 @@ class _CreateState extends State<Create> {
 String generateQuizCode() {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
   return String.fromCharCodes(
-      Iterable.generate(6, (_) => chars.codeUnitAt(Random().nextInt(chars.length))));
+    Iterable.generate(
+      6,
+      (_) => chars.codeUnitAt(Random().nextInt(chars.length)),
+    ),
+  );
 }

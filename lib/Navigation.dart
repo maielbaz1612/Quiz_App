@@ -5,9 +5,8 @@ import 'package:brainy/screen/profile.dart';
 import 'package:flutter/material.dart';
 
 class Navigation extends StatefulWidget {
-  const Navigation({super.key, required this.userName, required this.pass});
-  final String userName;
-  final String pass;
+  const Navigation({super.key, required this.userId});
+  final int userId;
 
   @override
   State<Navigation> createState() => _NavigationState();
@@ -26,9 +25,9 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> screens = [
-      Home(user: widget.userName ),
-      Create(),
-      Profile(name: widget.userName, password: widget.pass,),
+    Home(userId: widget.userId),
+    Create(),
+    Profile(userId: widget.userId),
     ];
     return Scaffold(
       body: PageView(
@@ -50,7 +49,10 @@ class _NavigationState extends State<Navigation> {
             itemLabel: 'Home',
           ),
           BottomBarItem(
-            inActiveItem: Icon(Icons.add_circle_outline, color: Colors.deepPurple),
+            inActiveItem: Icon(
+              Icons.add_circle_outline,
+              color: Colors.deepPurple,
+            ),
             activeItem: Icon(Icons.add_circle, color: Colors.white),
             itemLabel: 'Create',
           ),
