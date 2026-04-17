@@ -59,17 +59,21 @@ class _CreateState extends State<Create> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(children: [Text("Quiz Code ➔ "), Text(quizCode)]),
+        title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [Text("Quiz Code➔ "), Text(quizCode)]),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-
-            TextFormField(
+            TextField(
               controller: titleforQuiz,
+              decoration: InputDecoration(labelText: "Enter Title"),
+            ),
+            SizedBox(height: 20,),
+            TextFormField(
+              controller: questionController,
               decoration: InputDecoration(
-                hintText: "Enter Title",
+                hintText: "Question",
                 hintStyle: TextStyle(color: Color(0xFF5e548e)),
                 filled: true,
                 fillColor: Colors.white,
@@ -86,10 +90,7 @@ class _CreateState extends State<Create> {
                 ),
               ),
             ),
-            TextField(
-              controller: questionController,
-              decoration: InputDecoration(labelText: "Question"),
-            ),
+
 
             SizedBox(height: 20),
 
@@ -103,48 +104,57 @@ class _CreateState extends State<Create> {
 
             SizedBox(height: 20),
 
-            DropdownButton<int>(
-              value: correctIndex,
-              items: [0, 1, 2, 3]
-                  .map(
-                    (i) => DropdownMenuItem(
-                      value: i,
-                      child: Text("Correct: Option ${i + 1}"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Column(
+                  children: [
+                    DropdownButton<int>(
+                      value: correctIndex,
+                      items: [0, 1, 2, 3]
+                          .map(
+                            (i) => DropdownMenuItem(
+                              value: i,
+                              child: Text("Correct: Option ${i + 1}"),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (val) => setState(() => correctIndex = val!),
                     ),
-                  )
-                  .toList(),
-              onChanged: (val) => setState(() => correctIndex = val!),
-            ),
+                    //
+                    // DropdownButton<int>(
+                    //   value: currentPoints,
+                    //   items: [1, 2, 5, 10].map((int value) {
+                    //     return DropdownMenuItem<int>(
+                    //       value: value,
+                    //       child: Text("points : $value pts"),
+                    //     );
+                    //   }).toList(),
+                    //   onChanged: (newValue) {
+                    //     setState(() {
+                    //       currentPoints = newValue!;
+                    //     });
+                    //   },
+                    // ),
 
-            DropdownButton<int>(
-              value: currentPoints,
-              items: [1, 2, 5, 10].map((int value) {
-                return DropdownMenuItem<int>(
-                  value: value,
-                  child: Text("points : $value pts"),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  currentPoints = newValue!;
-                });
-              },
-            ),
+                    DropdownButton<int>(
+                      value: selectedCategory,
 
-            DropdownButton<int>(
-              value: selectedCategory,
-
-              items: [
-                DropdownMenuItem(value: 1, child: Text("Physics")),
-                DropdownMenuItem(value: 2, child: Text("Electronics")),
-                DropdownMenuItem(value: 3, child: Text("Python")),
-                DropdownMenuItem(value: 4, child: Text("CyberSecurity")),
+                      items: [
+                        DropdownMenuItem(value: 1, child: Text("Physics")),
+                        DropdownMenuItem(value: 2, child: Text("Electronics")),
+                        DropdownMenuItem(value: 3, child: Text("Python")),
+                        DropdownMenuItem(value: 4, child: Text("CyberSecurity")),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          selectedCategory = value!;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ],
-              onChanged: (value) {
-                setState(() {
-                  selectedCategory = value!;
-                });
-              },
             ),
 
             SizedBox(height: 20),

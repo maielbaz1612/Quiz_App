@@ -25,6 +25,7 @@ class _JoinState extends State<Join> {
         padding: EdgeInsets.all(50),
         child: Column(
           children: [
+            SizedBox(height: 50,),
             TextFormField(
               controller: code,
               decoration: InputDecoration(
@@ -46,31 +47,45 @@ class _JoinState extends State<Join> {
               ),
             ),
 
-            SizedBox(height: 20),
+            SizedBox(height: 40),
 
-            ElevatedButton(
-              onPressed: () async {
-                final db = SqlDatabase();
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    final db = SqlDatabase();
 
-                var result = await db.getQuizByCode(code.text);
+                    var result = await db.getQuizByCode(code.text);
 
-                if (result.isEmpty) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text("Quiz not found")));
-                  return;
-                }
+                    if (result.isEmpty) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text("Quiz not found")));
+                      return;
+                    }
 
-                int quizId = result.first['id'];
+                    int quizId = result.first['id'];
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => QuizScreen(quizId: quizId),
-                  ),
-                );
-              },
-              child: Text("Join"),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuizScreen(quizId: quizId),
+                      ),
+                    );
+                  },
+                  child: Text("Join"),
+                ),
+                SizedBox(width: 40,),
+
+                ElevatedButton(
+                  onPressed: () {
+
+                    Navigator.pop(context);
+                  },
+                  child: Text("back"),
+                ),
+              ],
             ),
           ],
         ),

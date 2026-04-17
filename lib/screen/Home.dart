@@ -10,11 +10,13 @@ class Home extends StatefulWidget {
   final int userId;
   const Home({super.key, required this.userId});
 
+
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  int points = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +81,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       SizedBox(width: 5),
-                      Text("0 pts",style: TextStyle(color: Colors.green[600]),),
+                      Text("${SqlDatabase.totalUserScore} pts",style: TextStyle(color: Colors.green[600]),),
                     ],
                   ),
                 ),

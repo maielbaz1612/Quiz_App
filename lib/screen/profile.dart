@@ -26,7 +26,7 @@ class Profile extends StatelessWidget {
           return Center(
             child: Column(
               children: [
-                SizedBox(height: 20),
+                SizedBox(height: 40),
                 Icon(Icons.person_pin, size: 100, color: Color(0xff5e548e)),
                 SizedBox(height: 20),
                 Text(
@@ -48,8 +48,8 @@ class Profile extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      user['email'],
+                    SizedBox(height: 30,),
+                    Text(user['email'] + "@gmail.com",
                       style: TextStyle(
                         color: Color(0xff5e548e),
                         fontSize: 15,

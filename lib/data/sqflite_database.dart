@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 
 class SqlDatabase {
   static Database? _db;
+  static int totalUserScore = 0;
 
   Future<Database> get db async {
     if (_db != null) return _db!;
@@ -219,6 +220,18 @@ class SqlDatabase {
     );
   }
 
+  Future<void> syncTotalScore() async {
+    final myDB = await db;
+
+    var result = await myDB.rawQuery('SELECT SUM(score) as total FROM attempts');
+
+    if (result.isNotEmpty && result.first['total'] != null) {
+      SqlDatabase.totalUserScore = result.first['total'] as int;
+    } else {
+      SqlDatabase.totalUserScore = 0;
+    }
+  }
+
   Future<int> submitQuiz({
     required int userId,
     required int quizId,
@@ -241,6 +254,7 @@ class SqlDatabase {
       'date': DateTime.now().toString(),
     });
 
+    SqlDatabase.totalUserScore += score;
     return score;
   }
 
@@ -263,6 +277,7 @@ class SqlDatabase {
     });
 
     await _saveUser(userId);
+    await syncTotalScore();
     return true;
   }
 
@@ -275,6 +290,7 @@ class SqlDatabase {
     if (user.isNotEmpty) {
       int userId = user.first['id'];
       await _saveUser(userId);
+      await syncTotalScore();
       return true;
     }
     return false;

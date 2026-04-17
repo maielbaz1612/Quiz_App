@@ -1,3 +1,9 @@
+
+## App Demo
+
+> video for App " https://drive.google.com/file/d/10Nsd-2CtwGVvHY3FxBfzWPPdKIYKqsSg/view?usp=sharing "
+
+
 ## Animation Research & Implementation
 
 1. *Implicit animations* 
@@ -5,21 +11,25 @@
 
 ---
 
-2. Explicit Animations
-These provide full control over the animation. They require an `AnimationController` to start, stop, or reverse the animation.
+2. *Explicit Animations*
+        These provide full control over the animation. They require an `AnimationController` to start, stop, or reverse the animation.
+        Examples include SizeTransition, ScaleTransition or PositionedTransition.
 
- **What we learned:** They are used for complex animations that need to be controlled manually or repeat indefinitely.
- **Implementation:** Studied for controlling custom transitions and timed sequences.
- **Reference:** [Flutter Docs - Explicit Animations](https://docs.flutter.dev/ui/animations/explicit-animations)
 
 ---
 
-3. Hero Animations
-A special type of animation that "flies" a widget from one screen to another during navigation.
+3. *Hero Animations*
+        are implemented using two Hero widgets: one describing the widget in the source route, and another describing the widget in the destination route. From the user's point of view, the hero appears to be shared, and only the programmer needs to understand this implementation detail.
+        
+ *       Hero animation code has the following structure:
 
- **What we learned:** It connects two different screens by sharing a common widget with a unique `tag`.
- **Implementation:** Used to animate the **Category Icon** from the `Home Screen` to the `Quiz Screen` to provide a seamless visual flow.
- **Reference:** [Flutter Docs - Hero Animations](https://docs.flutter.dev/ui/animations/hero-Animations)
+        Define a starting Hero widget, referred to as the source hero. The hero specifies its graphical representation (typically an image), and an identifying tag, and is in the currently displayed widget tree as defined by the source route.
+
+        Define an ending Hero widget, referred to as the destination hero. This hero also specifies its graphical representation, and the same tag as the source hero. It's essential that both hero widgets are created with the same tag, typically an object that represents the underlying data. For best results, the heroes should have virtually identical widget trees.
+
+        Create a route that contains the destination hero. The destination route defines the widget tree that exists at the end of the animation.
+        Trigger the animation by pushing the destination route on the Navigator's stack. The Navigator push and pop operations trigger a hero animation for each pair of heroes with matching tags in the source and destination routes.
+
 
 -----------------------------------------------------------------------------------------------------------------
 
@@ -103,8 +113,6 @@ Brainy is an interactive mobile application built using Flutter and Dart, design
         A dedicated login system that welcomes users by name and tracks their progress across the application.
 
 
-<Enhanced UX with Animations: The app utilizes both Implicit and Explicit animations, such as AnimatedContainer for interactive elements and Hero animations for smooth screen transitions, ensuring a polished and modern feel.>
-
 # Technical Implementation:
 
 * Navigation: 
@@ -118,8 +126,32 @@ Brainy is an interactive mobile application built using Flutter and Dart, design
 * OOP Principles: 
         Uses structured Data Models (e.g., QuizQuestion, Category) to manage application state and data flow effectively.
 
+# Technical Stack & Database Architecture
 
-----------------------------------------------------------------------------------------------------------------------------------------------
+We built the core logic of Brainy using a robust local data management system:
 
-## App Demo
-> video for App " "
+* Flutter & Dart: The main framework for the UI and logic.
+
+* Sqflite: Our primary Relational Database (RDBMS) for structured data (Users, Quizzes, Questions).
+
+* Shared Preferences: Used for Session Management to keep the user logged in.
+
+* Path & Path Provider: To manage safe and cross-platform internal storage paths for the database file.
+
+* Data Model Logic:
+
+We followed a Normalization approach to organize data across 6 interconnected tables:
+
+**Identity:** users table for authentication.
+
+**Hierarchy:** categories ➔ quizzes ➔ questions ➔ options.
+
+**Analytics:** attempts table to track progress and scores.
+
+* Key Performance Features:
+
+# SQL Transactions: Ensures a quiz is saved only if all its questions/options are valid.
+
+# Optimized Aggregation: Total points are calculated using SQL SUM for maximum efficiency.
+
+# Static State Caching: Syncing the database score with the UI once at login to provide a seamless, lag-free experience.
