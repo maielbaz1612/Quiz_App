@@ -35,9 +35,14 @@ class AvailableQuizzes extends StatelessWidget {
               var quiz = quizzes[index];
 
               return Card(
+                elevation: 4,
+                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 child: ListTile(
-                  title: Text(quiz['title']),
+                  leading: CircleAvatar(child: Text("${index + 1}")),
+                  title: Text(quiz['title'],style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text("Code: ${quiz['code']}"),
+                  trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
                     Navigator.push(
                       context,

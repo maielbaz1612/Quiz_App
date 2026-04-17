@@ -22,12 +22,28 @@ class _JoinState extends State<Join> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(50),
         child: Column(
           children: [
-            TextField(
+            TextFormField(
               controller: code,
-              decoration: InputDecoration(labelText: "Enter Code"),
+              decoration: InputDecoration(
+                hintText: "Enter Code",
+                hintStyle: TextStyle(color: Color(0xFF5e548e)),
+                filled: true,
+                fillColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(color: Colors.white30),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(
+                    color: Color(0xFFE0B1CB),
+                    width: 2,
+                  ),
+                ),
+              ),
             ),
 
             SizedBox(height: 20),

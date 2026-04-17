@@ -18,6 +18,8 @@ class _CreateState extends State<Create> {
   String quizCode = generateQuizCode();
   int correctIndex = 0;
   int currentPoints = 1;
+  TextEditingController titleforQuiz = TextEditingController();
+  int selectedCategory = 1;
 
   final questionController = TextEditingController();
 
@@ -54,6 +56,7 @@ class _CreateState extends State<Create> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Row(children: [Text("Quiz Code ➔ "), Text(quizCode)]),
@@ -62,6 +65,27 @@ class _CreateState extends State<Create> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
+
+            TextFormField(
+              controller: titleforQuiz,
+              decoration: InputDecoration(
+                hintText: "Enter Title",
+                hintStyle: TextStyle(color: Color(0xFF5e548e)),
+                filled: true,
+                fillColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(color: Colors.white30),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(
+                    color: Color(0xFFE0B1CB),
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
             TextField(
               controller: questionController,
               decoration: InputDecoration(labelText: "Question"),
@@ -92,6 +116,37 @@ class _CreateState extends State<Create> {
               onChanged: (val) => setState(() => correctIndex = val!),
             ),
 
+            DropdownButton<int>(
+              value: currentPoints,
+              items: [1, 2, 5, 10].map((int value) {
+                return DropdownMenuItem<int>(
+                  value: value,
+                  child: Text("points : $value pts"),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                setState(() {
+                  currentPoints = newValue!;
+                });
+              },
+            ),
+
+            DropdownButton<int>(
+              value: selectedCategory,
+
+              items: [
+                DropdownMenuItem(value: 1, child: Text("Physics")),
+                DropdownMenuItem(value: 2, child: Text("Electronics")),
+                DropdownMenuItem(value: 3, child: Text("Python")),
+                DropdownMenuItem(value: 4, child: Text("CyberSecurity")),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  selectedCategory = value!;
+                });
+              },
+            ),
+
             SizedBox(height: 20),
 
             ElevatedButton(
@@ -101,19 +156,28 @@ class _CreateState extends State<Create> {
 
             ElevatedButton(
               onPressed: () async {
-                final db = SqlDatabase();
+                //validation
+                if (titleforQuiz.text.isEmpty || questions.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Please enter a title and add at least one question")),
+                  );
+                  return;
+                }
 
+                final db = SqlDatabase();
                 Quiz quiz = Quiz(
-                  title: "New Quiz",
+                  title: titleforQuiz.text,
                   description: "description",
                   code: quizCode,
-                  categoryId: 1,
+                  categoryId: selectedCategory,
                   questions: questions,
                 );
 
                 await db.createFullQuiz(quiz);
 
-                Navigator.pop(context);
+                if(mounted){
+                  Navigator.pop(context);
+                }
               },
               child: Text("Finish"),
             ),

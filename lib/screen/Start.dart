@@ -152,7 +152,7 @@ class _StartState extends State<Start> {
                                 bool success = await myDB.signUp(
                                   name: userName.text,
                                   // email: email, // TODO: add a text field for email
-                                  password: password.text,
+                                  password: password.text, email: userName.text,
                                 );
                                 if (success) {
                                   int? userId = await myDB.getCurrentUser();

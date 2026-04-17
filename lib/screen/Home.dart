@@ -60,16 +60,26 @@ class _HomeState extends State<Home> {
                 ),
 
                 Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(color: Colors.grey[200],
+                      borderRadius: BorderRadius.all(Radius.elliptical(25, 25))),
+                  padding: EdgeInsets.all(5),
+                  width:100,
                   child: Row(
                     children: [
-                      Icon(Icons.star, color: Colors.orange),
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: Colors.yellow[600],
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.star_outline_sharp,
+                          color: Colors.white,
+                          size: 25,
+                        ),
+                      ),
                       SizedBox(width: 5),
-                      Text("points"),
+                      Text("0 pts",style: TextStyle(color: Colors.green[600]),),
                     ],
                   ),
                 ),

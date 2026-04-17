@@ -57,9 +57,11 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                   ),
                   onTap: () {
-                    setState(() {
-                      answers[question.id!] = option.id!;
-                    });
+                    if (question.id != null && option.id != null) {
+                      setState(() {
+                        answers[question.id!] = option.id!;
+                      });
+                    }
                   },
                 ),
               );

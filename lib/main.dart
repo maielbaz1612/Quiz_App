@@ -1,7 +1,17 @@
 import 'package:brainy/screen/Start.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'data/sqflite_database.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final db = SqlDatabase();
+
+  await db.insert('categories', {'name': 'Physics'});
+  await db.insert('categories', {'name': 'Electronics'});
+  await db.insert('categories', {'name': 'Python'});
+  await db.insert('categories', {'name': 'CyberSecurity'});
   runApp(const MyApp());
 }
 
