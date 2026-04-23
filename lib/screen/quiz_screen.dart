@@ -1,5 +1,6 @@
 import 'package:brainy/data/sqflite_database.dart';
 import 'package:brainy/models/quiz.dart';
+import 'package:brainy/screen/score.dart';
 import 'package:flutter/material.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -82,11 +83,12 @@ class _QuizScreenState extends State<QuizScreen> {
                     answers: answers,
                   );
 
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text("Score: $score")));
-
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ResultScreen(
+                        score: score,
+                        totalQuestions: quiz!.questions.length,
+                      ),
+                    ),
+                  );
                 }
               },
               child: Text("Next"),

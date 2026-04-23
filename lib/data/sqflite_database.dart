@@ -316,4 +316,11 @@ class SqlDatabase {
     final userId = prefs.getInt('userId');
     return userId != null;
   }
+  Future<String> getQuizTitleById(int quizId) async {
+    var result = await getWhere('quizzes', 'id = ?', [quizId]);
+    if (result.isNotEmpty) {
+      return result.first['title'] as String;
+    }
+    return "Unknown Quiz";
+  }
 }

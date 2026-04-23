@@ -31,7 +31,18 @@ class Achievements extends StatelessWidget {
               return Card(
                 margin: EdgeInsets.all(10),
                 child: ListTile(
-                  title: Text("Quiz ID: ${attempt['quizId']}"),
+                  title: FutureBuilder<String>(
+                    future: SqlDatabase().getQuizTitleById(attempt['quizId']),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(
+                          snapshot.data!,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        );
+                      }
+                      return Text("Loading...");
+                    },
+                  ),
                   subtitle: Text("Score: ${attempt['score']}"),
                   trailing: Text(attempt['date'].toString().substring(0, 10)),
                 ),
